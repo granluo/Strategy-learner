@@ -77,7 +77,6 @@ class StrategyLearner(object):
         # get holding, LONG, SHORT, CASH
         holding = self.learner.query(indicators)
 
-        print holding
         #get trade
         trades = holding.copy()
         trades.values[1:] = holding.values[1:] - holding.values[:-1]

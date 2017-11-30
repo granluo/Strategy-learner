@@ -80,7 +80,7 @@ def compute_portvals(orders, start_val = 100000, commission=0, impact=0):
 
     return Daily_value
 
-def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), sv = 100000):
+def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), sv = 100000,impact = None):
     mstrade =policy(symbol , sd, ed, sv)
     portvals =compute_portvals(mstrade)
     if isinstance(portvals, pd.DataFrame):
@@ -110,6 +110,14 @@ def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime
 
     ax.plot(portvals.index,portvals.values/portvals.values[0],color = 'black',label=label)
     ax.plot(bmportvals.index,bmportvals.values/bmportvals.values[0],color = 'blue',label='Benchmark')
+    if type(impact) is list:
+        color=plt.cm.rainbow(np.linspace(0,1,len(impact)))
+        c = 0
+        for i in impact:
+            po = compute_portvals(mstrade,impact = i)
+            ax.plot(portvals.index,po.values/po.values[0],color = color[c],label=label+' impact '+str(i))
+            c+= 1
+
     plt.title(title)
     ax.legend(loc='best', shadow=True)
     fig.autofmt_xdate()
