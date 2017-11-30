@@ -49,7 +49,6 @@ def compute_portvals(orders, start_val = 100000, commission=0, impact=0):
         shares_hold[i] = 0
     date_current = start_date
     for i,tra in orders.iterrows():
-        print i
         if not isinstance(portvals.loc[i][tra['Symbol']],float):
             continue
         while True:
@@ -92,8 +91,8 @@ def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime
     # Get portfolio stats
     # Here we just fake the data. you should use your code from previous assignments.
     bm = pd.DataFrame()
-    bm['Date']= [sd, ed]
-    bm['JPM'] = [1000,-1000]
+    bm['Date']= [mstrade.index.values[0], mstrade.index.values[-1]]
+    bm[symbol] = [1000,-1000]
 
     bm.set_index('Date',inplace=True)
     bmportvals =  compute_portvals(bm)
@@ -104,9 +103,9 @@ def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime
     bmdaily_return.ix[0] = 0.
 
     fig, ax = plt.subplots()
-    for d in mstrade.index[mstrade['JPM']<0]:
+    for d in mstrade.index[mstrade[symbol]<0]:
         ax.axvline(x = d , color = 'red')
-    for d in mstrade.index[mstrade['JPM']>0]:
+    for d in mstrade.index[mstrade[symbol]>0]:
         ax.axvline(x = d, color ='green')
 
     ax.plot(portvals.index,portvals.values/portvals.values[0],color = 'black',label=label)

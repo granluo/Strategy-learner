@@ -27,17 +27,15 @@ def testPolicy(symbol = "AAPL",sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,
     holding = prices.copy()
     holding.values[:-1,0] =[1000 if x>0  else -1000 for x in daily_rets[symbol].values[1:,]]
     holding.values[-1,:] = 0
-    holding.columns = [symbol[0]+(' holding')]
 
-    return holding
-    # trade = holding.copy()
-    # trade.values[1:,:] = holding.values[1:,:] - holding.values[:-1,:]
-    # trade.values[0,:] = holding.values[0,:]
-    # trade.columns = [symbol[0]+(' trade')]
+    trade = holding.copy()
+    trade.values[1:,:] = holding.values[1:,:] - holding.values[:-1,:]
+    trade.values[0,:] = holding.values[0,:]
+    trade.columns = [symbol]
     # print trade
     # print sv- (bmtrade.values*prices.values).sum()
     # print sv -1000*prices.values[0,0]+ 1000*prices.values[-1,0]
-    # return trade
+    return trade
     # print daily_rets
 
 

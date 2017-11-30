@@ -52,7 +52,8 @@ class StrategyLearner(object):
         sma = ind.sma(sd , ed ,syms = [symbol],lookback = self.lb, ratio = False)
         bb = ind.bb(sd , ed ,syms = [symbol],lookback = self.lb)
         rsi = ind.rsi(sd , ed ,syms = [symbol],lookback = self.lb)
-        df = pd.concat([sma,bb,rsi],axis = 1)
+        so = ind.so(sd , ed ,syms = [symbol],lookback = self.lb)
+        df = pd.concat([sma,bb[[symbol]],rsi[[symbol]],so[[symbol]]],axis = 1)
         return df
 
     # this method should use the existing policy and test it against new data
@@ -66,15 +67,14 @@ class StrategyLearner(object):
         prices_all = ut.get_data([symbol], dates)  # automatically adds SPY
         trades = prices_all[[symbol,]]  # only portfolio symbols
         indicators = self.dataset_addind(sd,ed,symbol,self.lb)
-
         # get holding, LONG, SHORT, CASH
         holding = self.learner.query(indicators)
-        print holding
+        # print holding
         #get trade
         trades = holding.copy()
         trades.values[1:] = holding.values[1:] - holding.values[:-1]
         trades.values[0] = holding.values[0]
-        trades.columns = [symbol+(' trade')]
+        trades.columns = [symbol]
         # print sum(trades)
         # print mktsim.compute_portvals(trade, start_val = 100000, commission=0, impact=0)
         #
