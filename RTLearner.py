@@ -14,6 +14,8 @@ class RTLearner:
     def query(self,Xtest):
         output = Xtest.copy()
         output[output.columns.values[0] +'_holding'] = output.apply(self.singlequery,axis = 1)
+        output.ix[-1,output.columns.values[0] +'_holding'] = 0
+
         return output[[output.columns.values[0] +'_holding']]
 
     def singlequery(self,sigXtest):

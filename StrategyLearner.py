@@ -4,6 +4,7 @@ Template for implementing StrategyLearner  (c) 2016 Tucker Balch
 import sys
 sys.path.append('..')
 import datetime as dt
+import numpy as np
 import pandas as pd
 import util as ut
 import random
@@ -42,7 +43,13 @@ class StrategyLearner(object):
 
 
         #random tree
-        self.bps = bps.testPolicy(symbol ,sd, ed, sv)
+        daily_rets=prices.copy()
+        daily_rets.values[1:,:]= prices.values[1:,:]-prices.values[:-1,:]
+        daily_rets.values[0,:] = np.nan
+        holding = prices.copy()
+        holding.values[:-1,0] =[1000 if x>0  else -1000 for x in daily_rets[symbol].values[1:,]]
+        holding.values[-1,:] = 0
+        self.bps = holding
 
         df = pd.concat([self.dataset_addind(sd,ed,symbol,self.lb),self.bps],axis = 1)
         # print df.ix[:,0:-1]
@@ -69,7 +76,8 @@ class StrategyLearner(object):
         indicators = self.dataset_addind(sd,ed,symbol,self.lb)
         # get holding, LONG, SHORT, CASH
         holding = self.learner.query(indicators)
-        # print holding
+
+        print holding
         #get trade
         trades = holding.copy()
         trades.values[1:] = holding.values[1:] - holding.values[:-1]
