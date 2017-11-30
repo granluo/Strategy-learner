@@ -50,19 +50,27 @@ class RTLearner:
             if i > med:
                 return False
         return True
+    def find_mode(self, Ytrain):
+        count = {}
+        for i in Ytrain:
+            if i in count:
+                count[i]+= 1
+            else:
+                count[i] = 1
+        return max(count, key=count.get)
 
     def buildtree(self,Xtrain,Ytrain):
 #	print (Xtrain,Ytrain)
 #	print (Xtrain.shape, Ytrain.shape)
         if Xtrain.shape[0] <= self.leaf_size:
-            return [['leaf',int(Ytrain.median())/1000*1000,'','']]
+            return [['leaf',self.find_mode(Ytrain),'','']]
         if self.issameY(Ytrain):
-            return [['leaf',int(Ytrain.median())/1000*1000,'','']]
+            return [['leaf',self.find_mode(Ytrain),'','']]
         else:
             bestf = self.getsplitfeature(Xtrain,Ytrain)
             SplitVal = np.median(Xtrain.ix[:,bestf]) if (not self.smallerthanmed(Xtrain,bestf)) else np.mean(Xtrain.ix[:,bestf])
 	    if (len(Xtrain) == len(Xtrain.ix[Xtrain.ix[:,bestf] <= SplitVal])|(len(Xtrain) == 0)):
-		return [['leaf',Ytrain.mean(),'','']]
+		return [['leaf',self.find_mode(Ytrain),'','']]
             lefttree = self.buildtree(Xtrain.ix[Xtrain.ix[:,bestf]<=SplitVal],Ytrain[Xtrain.ix[:,bestf]<=SplitVal])
             righttree = self.buildtree(Xtrain.ix[Xtrain.ix[:,bestf]>SplitVal],Ytrain[Xtrain.ix[:,bestf]>SplitVal])
             root = [bestf,SplitVal,1,len(lefttree)+1]

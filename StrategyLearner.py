@@ -69,12 +69,13 @@ class StrategyLearner(object):
 
         # get holding, LONG, SHORT, CASH
         holding = self.learner.query(indicators)
-
+        print holding
         #get trade
         trades = holding.copy()
         trades.values[1:] = holding.values[1:] - holding.values[:-1]
         trades.values[0] = holding.values[0]
         trades.columns = [symbol+(' trade')]
+        # print sum(trades)
         # print mktsim.compute_portvals(trade, start_val = 100000, commission=0, impact=0)
         #
         # trades_SPY = prices_all['SPY']  # only SPY, for comparison later
@@ -94,6 +95,6 @@ class StrategyLearner(object):
 if __name__=="__main__":
 
     a = StrategyLearner()
-    a.addEvidence()
-    a.testPolicy()
+    a.addEvidence(symbol="ML4T-220",sd=dt.datetime(2008,1,1),ed=dt.datetime(2009,12,31),sv=100000)
+    a.testPolicy(symbol="ML4T-220",sd=dt.datetime(2010,1,1),ed=dt.datetime(2011,12,31),sv=100000)
     print "One does not simply think up a strategy"
