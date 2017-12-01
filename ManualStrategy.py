@@ -11,7 +11,7 @@ from indicators import bb,sma,so
 # simple moving average rate
 # Stochastic Oscillator
 
-def testPolicy(symbol = "AAPL",sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,31), sv = 100000):
+def testPolicy(symbol = "AAPL",sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,31), sv = 100000,impact = None):
     bb_index = bb(sd,ed,[symbol])
     sma_index = sma(sd,ed,[symbol],ratio = True)
     so_index = so(sd,ed,[symbol])

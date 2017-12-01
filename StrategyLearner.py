@@ -24,7 +24,8 @@ class StrategyLearner(object):
     def addEvidence(self, symbol = "IBM", \
         sd=dt.datetime(2008,1,1), \
         ed=dt.datetime(2009,1,1), \
-        sv = 10000):
+        sv = 10000, \
+        impact = 0):
 
         # add your code to do learning here
 
@@ -43,12 +44,14 @@ class StrategyLearner(object):
 
 
         #random tree
-        daily_rets=prices.copy()
-        daily_rets.values[1:,:]= prices.values[1:,:]-prices.values[:-1,:]
-        daily_rets.values[0,:] = np.nan
-        holding = prices.copy()
-        holding.values[:-1,0] =[1000 if x>0  else -1000 for x in daily_rets[symbol].values[1:,]]
-        holding.values[-1,:] = 0
+        # daily_rets=prices.copy()
+        # daily_rets.values[1:,:]= prices.values[1:,:]-prices.values[:-1,:]
+        # daily_rets.values[0,:] = np.nan
+        # holding = prices.copy()
+        # holding.values[:-1,0] =[1000 if x>0  else -1000 for x in daily_rets[symbol].values[1:,]]
+        # holding.values[-1,:] = 0
+        daily_rets = bps.testPolicy( symbol,sd,ed,sv,impact = impact )
+        holding = np.cumsum(daily_rets)
         self.bps = holding
 
         df = pd.concat([self.dataset_addind(sd,ed,symbol,self.lb),self.bps],axis = 1)
@@ -67,7 +70,7 @@ class StrategyLearner(object):
     def testPolicy(self, symbol = "IBM", \
         sd=dt.datetime(2009,1,1), \
         ed=dt.datetime(2010,1,1), \
-        sv = 10000):
+        sv = 10000,impact = None):
         # here we build a fake set of trades
         # your code should return the same sort of data
         dates = pd.date_range(sd, ed)

@@ -81,7 +81,7 @@ def compute_portvals(orders, start_val = 100000, commission=0, impact=0):
     return Daily_value
 
 def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), sv = 100000,impact = None):
-    mstrade =policy(symbol , sd, ed, sv)
+    mstrade =policy(symbol , sd, ed, sv,impact = impact)
     portvals =compute_portvals(mstrade)
     if isinstance(portvals, pd.DataFrame):
         portvals = portvals[portvals.columns[0]] # just get the first column
