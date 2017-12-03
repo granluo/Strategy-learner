@@ -1,3 +1,5 @@
+# Zongran Luo
+# zluo76
 import sys
 sys.path.append('..')
 import pandas as pd
@@ -17,10 +19,10 @@ def test():
     # mktsim.plotgraph('BestPossibleStrategy','Best Strategy',policy = bp.testPolicy,sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31))
     # mktsim.plotgraph('In Sample ManualStrategy','Manual Strategy',sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31))
     slearner = sl.StrategyLearner()
-    for impact in [0.01]:
-        mktsim.plotgraph('BestPossibleStrategy','Best Strategy',policy = bp.testPolicy,sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), impact=impact)
+    for impact in [0.001,0.005,0.01]:
+        mktsim.plotgraph('BestPossibleStrategy with the market impact of {}'.format(impact),'Best Strategy',policy = bp.testPolicy,sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), impact=impact)
         slearner.addEvidence(symbol='JPM',sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31),sv = 10000,impact = impact)
-        mktsim.plotgraph('In Sample StrategyLearner','RDT Strategy',policy = slearner.testPolicy, sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), impact=impact)
+        mktsim.plotgraph('In Sample StrategyLearner with the market impact of {}'.format(impact),'RDT Strategy',policy = slearner.testPolicy, sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), impact=impact)
 
 if __name__ == '__main__':
     test()

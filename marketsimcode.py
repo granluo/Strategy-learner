@@ -1,4 +1,6 @@
  # implements your indicators as functions that operate on dataframes. The "main" code in indicators.py should generate the charts that illustrate your indicators in the report.
+# Zongran Luo
+# zluo76
 """MC2-P1: Market simulator."""
 import sys
 sys.path.append('..')
@@ -117,7 +119,7 @@ def plotgraph(title,label,policy = ms.testPolicy, symbol = "JPM", sd=dt.datetime
             po = compute_portvals(mstrade,impact = i)
             ax.plot(portvals.index,po.values/po.values[0],color = color[c],label=label+' impact '+str(i))
             c+= 1
-
+            
     plt.title(title)
     ax.legend(loc='best', shadow=True)
     fig.autofmt_xdate()

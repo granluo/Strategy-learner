@@ -1,3 +1,5 @@
+# Zongran Luo
+# zluo76
 """
 Template for implementing StrategyLearner  (c) 2016 Tucker Balch
 """
@@ -63,7 +65,7 @@ class StrategyLearner(object):
         bb = ind.bb(sd , ed ,syms = [symbol],lookback = self.lb)
         rsi = ind.rsi(sd , ed ,syms = [symbol],lookback = self.lb)
         so = ind.so(sd , ed ,syms = [symbol],lookback = self.lb)
-        df = pd.concat([sma,bb[[symbol]],rsi[[symbol]],so[[symbol]]],axis = 1)
+        df = pd.concat([sma,bb[[symbol]],so[[symbol]]],axis = 1)
         return df
 
     # this method should use the existing policy and test it against new data
